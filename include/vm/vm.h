@@ -45,6 +45,7 @@ public:
   Expect<void> registerModule(std::string_view Name,
                               const std::filesystem::path &Path);
   Expect<void> registerModule(std::string_view Name, Span<const Byte> Code);
+  Expect<void> registerModule(std::string_view Name, const AST::Module &Module);
   Expect<void> registerModule(const Runtime::ImportObject &Obj);
 
   /// Rapidly load, validate, instantiate, and run wasm function.
@@ -55,9 +56,10 @@ public:
   runWasmFile(Span<const Byte> Code, std::string_view Func,
               Span<const ValVariant> Params = {});
 
-  /// Load given wasm file or wasm bytecode.
+  /// Load given wasm file, wasm bytecode, or wasm module.
   Expect<void> loadWasm(const std::filesystem::path &Path);
   Expect<void> loadWasm(Span<const Byte> Code);
+  Expect<void> loadWasm(const AST::Module &Module);
 
   /// ======= Functions can be called after loaded stage. =======
   /// Validate loaded wasm module.
@@ -98,7 +100,6 @@ private:
   enum class VMStage : uint8_t { Inited, Loaded, Validated, Instantiated };
 
   void initVM();
-  Expect<void> registerModule(std::string_view Name, const AST::Module &Module);
   Expect<std::vector<ValVariant>> runWasmFile(const AST::Module &Module,
                                               std::string_view Func,
                                               Span<const ValVariant> Params);
