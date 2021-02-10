@@ -105,7 +105,7 @@ private:
                                               Span<const ValVariant> Params);
 
   /// VM environment.
-  const Configure &Config;
+  const Configure Conf;
   Statistics::Statistics Stat;
   VMStage Stage;
 
